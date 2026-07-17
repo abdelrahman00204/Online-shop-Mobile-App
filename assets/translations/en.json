@@ -1,0 +1,136 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "error_title": "Error",
+    "or": "OR",
+    "buy_now": "BUY NOW",
+    "submit": "Submit",
+    "save": "Save",
+    "email_label": "Email",
+    "password": "Password",
+    "password_label": "Enter your Password",
+    "confirm_password_label": "Confirm Password",
+    "confirm_your_password_label": "Confirm your Password",
+    "new_password_label": "New Password",
+    "current_password_label": "Current Password",
+    "first_name_label": "First Name",
+    "last_name_label": "Last Name",
+    "phone_label": "Phone",
+    "sign_up": "Sign Up",
+    "login": "Login",
+    "nav_home": "Home",
+    "nav_shop": "Shop",
+    "nav_wishlist": " Wishlist",
+    "nav_ai_chat": "AI Chat",
+    "validators": {
+      "email_required": "Email is required",
+      "invalid_email": "Enter a valid email",
+      "password_required": "Password is required",
+      "password_min_length": "Password must be at least 8 characters",
+      "passwords_not_match": "Passwords do not match",
+      "first_name_required": "Please enter your first name",
+      "last_name_required": "Please enter your last name",
+      "phone_required": "Please enter your phone number",
+      "field_required": "Please enter your {}"
+    }
+  },
+  "change_password": {
+    "title": "Change Password",
+    "mismatch_message": "New password and confirmation do not match.",
+    "success_message": "Password changed successfully",
+    "google_account_title": "Error",
+    "google_account_message": "You are logged in with Google. Please change your password through your Google account.",
+    "wrong_current_message": "Could not change your password. Please check your current password and try again.",
+    "current_password_required": "Current password is required",
+    "submit_button": "Change The Password"
+  },
+  "chat": {
+    "title": "AI Chat",
+    "message_hint": "Type a message"
+  },
+  "home": {
+    "profile_menu": "Profile",
+    "logout_menu": "Logout",
+    "categories": "Categories",
+    "offers": "Offers"
+  },
+  "item": {
+    "description_label": "Description :",
+    "availability_label": "Availability :",
+    "in_stock": " In Stock",
+    "not_available": " Not Available",
+    "unit_label": "Unit : {}",
+    "price_label": "Price : {} EGP",
+    "add_to_cart": "Add to cart ",
+    "go_to_wishlist": "Go to Wishlist ",
+    "add_to_wishlist": "Add to Wishlist "
+  },
+  "login": {
+    "missing_fields_title": "Missing Fields",
+    "missing_fields_message": "Please enter your email and password.",
+    "wrong_password_title": "Wrong Password",
+    "wrong_password_message": "Incorrect password. Please try again.",
+    "generic_error_message": "Something went wrong. Please try again later.",
+    "google_failed_title": "Google Login Failed",
+    "google_failed_message": "Could not sign in with Google. Please try again.",
+    "no_account_title": "No Account Found",
+    "no_account_message": "We couldn't find an account with this email. Would you like to sign up?",
+    "title": "Login",
+    "subtitle": "Login to your account",
+    "email_hint": "Enter your Email",
+    "password_hint": "Enter your Password",
+    "forgot_password": "Forgot Password?",
+    "google_button": "Login with Google",
+    "no_account_prompt": "Don't have an account? "
+  },
+  "profile": {
+    "title": "Profile",
+    "favorite_branch_label": "Favorite Branch: {}",
+    "change_password_button": "Change password",
+    "update_error_message": "Could not update your profile. Please try again."
+  },
+  "set_new_password": {
+    "title": "Set New Password",
+    "reset_failed_message": "Could not reset password. Please try again.",
+    "submit_button": "Reset Password"
+  },
+  "shop": {
+    "filter_button": "FILTER"
+  },
+  "signup": {
+    "missing_fields_title": "Missing Fields",
+    "missing_fields_message": "Please fill in all fields.",
+    "password_mismatch_title": "Password Mismatch",
+    "password_mismatch_message": "Passwords do not match.",
+    "failed_title": "Signup Failed",
+    "failed_message": "Could not create account. Please try again.",
+    "google_error_message": "Google signup failed. Please try again.",
+    "title": "Sign Up",
+    "subtitle": "Create a new account",
+    "google_button": "Sign Up with Google",
+    "have_account_prompt": "Have an account? ",
+    "password_validation_requirements": "Password must contain an uppercase letter, a special character, and be at least 8 characters long."
+  },
+  "user_data": {
+    "incomplete_message": "Registration is not complete yet. Please try again.",
+    "save_error_message": "Could not save your data. Please try again."
+  },
+  "cart": {
+    "empty_message": "Cart is empty, try add somthing."
+  },
+  "forgot_password": {
+    "title": "Forgot Password",
+    "submit_button": "Send Reset mail",
+    "not_found_message": "We could not find an account with that email.",
+    "generic_error_message": "Something went wrong. Please check your connection and try again."
+  },
+  "verification": {
+    "title": "Verification Code",
+    "subtitle": "Enter the 6-digit code sent to {}",
+    "invalid_code_message": "Invalid or expired code. Please try again."
+  },
+  "wishlist": {
+    "empty_message": "Wishlist is empty , add something."
+  }
+}

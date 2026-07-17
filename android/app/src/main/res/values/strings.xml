@@ -1,0 +1,6 @@
+<resources>
+  <string name="app_name">الغول</string>
+  <string name="facebook_app_id">1530768268503503</string>
+  <string name="fb_login_protocol_scheme">fb1530768268503503</string>
+  <string name="facebook_client_token">a5dfe37d072155e59ab91c459320ef6d</string>
+</resources>

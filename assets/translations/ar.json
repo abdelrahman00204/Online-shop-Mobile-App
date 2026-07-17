@@ -1,0 +1,136 @@
+{
+  "common": {
+    "ok": "حسناً",
+    "cancel": "إلغاء",
+    "error_title": "خطأ",
+    "or": "أو",
+    "buy_now": "اشترِ الآن",
+    "submit": "إرسال",
+    "save": "حفظ",
+    "email_label": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "password_label": "أدخل كلمة المرور",
+    "confirm_password_label": "تأكيد كلمة المرور",
+    "confirm_your_password_label": "أكد كلمة المرور",
+    "new_password_label": "كلمة المرور الجديدة",
+    "current_password_label": "كلمة المرور الحالية",
+    "first_name_label": "الاسم الأول",
+    "last_name_label": "اسم العائلة",
+    "phone_label": "رقم الهاتف",
+    "sign_up": "إنشاء حساب",
+    "login": "تسجيل الدخول",
+    "nav_home": "الرئيسية",
+    "nav_shop": "المتجر",
+    "nav_wishlist": " المفضلة",
+    "nav_ai_chat": "المحادثة الذكية",
+    "validators": {
+      "email_required": "البريد الإلكتروني مطلوب",
+      "invalid_email": "أدخل بريدًا إلكترونيًا صالحًا",
+      "password_required": "كلمة المرور مطلوبة",
+      "password_min_length": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+      "passwords_not_match": "كلمتا المرور غير متطابقتين",
+      "first_name_required": "يرجى إدخال الاسم الأول",
+      "last_name_required": "يرجى إدخال اسم العائلة",
+      "phone_required": "يرجى إدخال رقم الهاتف",
+      "field_required": "يرجى إدخال {}"
+    }
+  },
+  "change_password": {
+    "title": "تغيير كلمة المرور",
+    "mismatch_message": "كلمة المرور الجديدة وتأكيدها غير متطابقين.",
+    "success_message": "تم تغيير كلمة المرور بنجاح",
+    "google_account_title": "خطأ",
+    "google_account_message": "أنت مسجل الدخول عبر جوجل. يرجى تغيير كلمة المرور من خلال حساب جوجل الخاص بك.",
+    "wrong_current_message": "تعذر تغيير كلمة المرور. يرجى التحقق من كلمة المرور الحالية والمحاولة مرة أخرى.",
+    "current_password_required": "كلمة المرور الحالية مطلوبة",
+    "submit_button": "تغيير كلمة المرور"
+  },
+  "chat": {
+    "title": "المحادثة الذكية",
+    "message_hint": "اكتب رسالة"
+  },
+  "home": {
+    "profile_menu": "الملف الشخصي",
+    "logout_menu": "تسجيل الخروج",
+    "categories": "الفئات",
+    "offers": "العروض"
+  },
+  "item": {
+    "description_label": "الوصف :",
+    "availability_label": "التوفر :",
+    "in_stock": " متوفر",
+    "not_available": " غير متوفر",
+    "unit_label": "الوحدة : {}",
+    "price_label": "السعر : {} جنيه",
+    "add_to_cart": "أضف إلى السلة ",
+    "go_to_wishlist": "الذهاب إلى المفضلة ",
+    "add_to_wishlist": "أضف إلى المفضلة "
+  },
+  "login": {
+    "missing_fields_title": "بيانات ناقصة",
+    "missing_fields_message": "يرجى إدخال البريد الإلكتروني وكلمة المرور.",
+    "wrong_password_title": "كلمة مرور خاطئة",
+    "wrong_password_message": "كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
+    "generic_error_message": "حدث خطأ ما. يرجى المحاولة لاحقًا.",
+    "google_failed_title": "فشل تسجيل الدخول عبر جوجل",
+    "google_failed_message": "تعذر تسجيل الدخول عبر جوجل. يرجى المحاولة مرة أخرى.",
+    "no_account_title": "لم يتم العثور على حساب",
+    "no_account_message": "لم نتمكن من العثور على حساب بهذا البريد الإلكتروني. هل تريد إنشاء حساب؟",
+    "title": "تسجيل الدخول",
+    "subtitle": "سجّل الدخول إلى حسابك",
+    "email_hint": "أدخل بريدك الإلكتروني",
+    "password_hint": "أدخل كلمة المرور",
+    "forgot_password": "نسيت كلمة المرور؟",
+    "google_button": "تسجيل الدخول عبر جوجل",
+    "no_account_prompt": "ليس لديك حساب؟ "
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "favorite_branch_label": "الفرع المفضل: {}",
+    "change_password_button": "تغيير كلمة المرور",
+    "update_error_message": "تعذر تحديث ملفك الشخصي. يرجى المحاولة مرة أخرى."
+  },
+  "set_new_password": {
+    "title": "تعيين كلمة مرور جديدة",
+    "reset_failed_message": "تعذر إعادة تعيين كلمة المرور. يرجى المحاولة مرة أخرى.",
+    "submit_button": "إعادة تعيين كلمة المرور"
+  },
+  "shop": {
+    "filter_button": "تصفية"
+  },
+  "signup": {
+    "missing_fields_title": "بيانات ناقصة",
+    "missing_fields_message": "يرجى ملء جميع الحقول.",
+    "password_mismatch_title": "عدم تطابق كلمة المرور",
+    "password_mismatch_message": "كلمتا المرور غير متطابقتين.",
+    "failed_title": "فشل إنشاء الحساب",
+    "failed_message": "تعذر إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+    "google_error_message": "فشل إنشاء الحساب عبر جوجل. يرجى المحاولة مرة أخرى.",
+    "title": "إنشاء حساب",
+    "subtitle": "أنشئ حسابًا جديدًا",
+    "google_button": "إنشاء حساب عبر جوجل",
+    "have_account_prompt": "لديك حساب بالفعل؟ ",
+    "password_validation_requirements": "يجب أن تحتوي كلمة المرور على حرف كبير، رمز خاص، وبطول 8 أحرف على الأقل."
+  },
+  "user_data": {
+    "incomplete_message": "التسجيل غير مكتمل بعد. يرجى المحاولة مرة أخرى.",
+    "save_error_message": "تعذر حفظ بياناتك. يرجى المحاولة مرة أخرى."
+  },
+  "cart": {
+    "empty_message": "السلة فارغة، حاول إضافة شيء ما."
+  },
+  "forgot_password": {
+    "title": "نسيت كلمة المرور",
+    "submit_button": "إرسال بريد إعادة التعيين",
+    "not_found_message": "لم نتمكن من العثور على حساب بهذا البريد الإلكتروني.",
+    "generic_error_message": "حدث خطأ ما. يرجى التحقق من اتصالك والمحاولة مرة أخرى."
+  },
+  "verification": {
+    "title": "رمز التحقق",
+    "subtitle": "أدخل الرمز المكون من 6 أرقام المرسل إلى {}",
+    "invalid_code_message": "الرمز غير صالح أو منتهي الصلاحية. يرجى المحاولة مرة أخرى."
+  },
+  "wishlist": {
+    "empty_message": "المفضلة فارغة، أضف شيئًا ما."
+  }
+}
