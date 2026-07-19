@@ -24,7 +24,6 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
 
   @override
   Widget build(BuildContext context) {
-    
     const double width = 60.0;
     const double height = 30.0;
     const double padding = 4.0;
@@ -80,6 +79,10 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
+                              fontFamily:
+                                  'Roboto', // force a neutral font, not the locale-driven Arabic theme font
+                              height:
+                                  1.0, // pin line-height so glyph doesn't shift vertically
                             ),
                           ),
                         ),
@@ -120,6 +123,10 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
+                              fontFamily:
+                                  'Roboto', // force a neutral font, not the locale-driven Arabic theme font
+                              height:
+                                  1.0, // pin line-height so glyph doesn't shift vertically
                             ),
                           ),
                         ),
@@ -137,6 +144,8 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Roboto',
+                              height: 1.0,
                               color: _isArabic
                                   ? Colors.white
                                   : Colors.transparent,
@@ -150,7 +159,7 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
                           child: AnimatedDefaultTextStyle(
                             duration: const Duration(milliseconds: 250),
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: _isArabic
                                   ? Colors.transparent
@@ -169,7 +178,7 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
                           child: AnimatedDefaultTextStyle(
                             duration: const Duration(milliseconds: 250),
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: _isArabic
                                   ? Colors.transparent
@@ -186,6 +195,8 @@ class _LanguageToggleButtonState extends State<LanguageToggleButton> {
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Roboto',
+                              height: 1.0,
                               color: _isArabic
                                   ? Colors.white
                                   : Colors.transparent,
