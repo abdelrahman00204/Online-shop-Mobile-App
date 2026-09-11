@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:the_project/managers/auth_manage.dart';
@@ -15,8 +16,8 @@ class ApiService {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
-    print('Login status: ${response.statusCode}');
-    print('Login body: ${response.body}');
+    debugPrint('Login status: ${response.statusCode}');
+    debugPrint('Login body: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -52,11 +53,11 @@ class ApiService {
       }),
     );
     if (response.statusCode == 400) {
-      print('Registration failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Registration failed: ${response.statusCode} - ${response.body}');
       throw 'password_requirements_failed';
     }
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print('Registration failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Registration failed: ${response.statusCode} - ${response.body}');
       throw 'registration_failed';
     }
   }
@@ -69,11 +70,11 @@ class ApiService {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'IdToken': providerToken}),
     );
-    print('Google login raw response: ${response.body}'); // ADD THIS LINE
+    debugPrint('Google login raw response: ${response.body}'); // ADD THIS LINE
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body);
     } else {
-      print(
+      debugPrint(
         'Social authentication failed: ${response.statusCode} - ${response.body}',
       );
       throw 'social_auth_failed';
@@ -83,7 +84,7 @@ class ApiService {
   static Future<Map<String, dynamic>> loginWithFacebookProvider(
     String providerToken,
   ) async {
-    print('Sending Facebook token: $providerToken'); // ADD THIS LINE
+    debugPrint('Sending Facebook token: $providerToken'); // ADD THIS LINE
     final response = await http.post(
       Uri.parse('$_baseUrl/customer/auth/facebook'),
       headers: {'Content-Type': 'application/json'},
@@ -93,7 +94,7 @@ class ApiService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body);
     } else {
-      print(
+      debugPrint(
         'Social authentication failed: ${response.statusCode} - ${response.body}',
       );
       throw 'social_auth_failed';
@@ -107,7 +108,7 @@ class ApiService {
   }) async {
     for (int i = 0; i < token.length; i += 100) {
       final end = (i + 100 < token.length) ? i + 100 : token.length;
-      print('TOKEN PART: ${token.substring(i, end)}');
+      debugPrint('TOKEN PART: ${token.substring(i, end)}');
     }
 
     final body = jsonEncode({
@@ -115,16 +116,16 @@ class ApiService {
       'PreferredBranchId': preferredBranchId,
       'PhoneNumber': phone,
     });
-    print('BODY LENGTH: ${body.length}');
-    print('BODY TAIL: ${body.substring(body.length - 80)}'); // last 80 chars
+    debugPrint('BODY LENGTH: ${body.length}');
+    debugPrint('BODY TAIL: ${body.substring(body.length - 80)}'); // last 80 chars
 
     final response = await http.post(
       Uri.parse('$_baseUrl/customer/auth/google'),
       headers: {'Content-Type': 'application/json'},
       body: body,
     );
-    print('SAVE PROFILE STATUS: ${response.statusCode}');
-    print('SAVE PROFILE BODY: ${response.body}');
+    debugPrint('SAVE PROFILE STATUS: ${response.statusCode}');
+    debugPrint('SAVE PROFILE BODY: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body);
@@ -167,7 +168,7 @@ class ApiService {
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print('send email failed: ${response.statusCode} - ${response.body}');
+      debugPrint('send email failed: ${response.statusCode} - ${response.body}');
       throw 'password_reset_failed';
     }
   }
@@ -180,7 +181,7 @@ class ApiService {
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print(
+      debugPrint(
         'Code verification failed: ${response.statusCode} - ${response.body}',
       );
       throw 'Wrong code';
@@ -199,7 +200,7 @@ class ApiService {
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print('Password reset failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Password reset failed: ${response.statusCode} - ${response.body}');
       throw 'somthing went wrong , please try again ';
     }
   }
@@ -221,10 +222,10 @@ class ApiService {
       }),
     );
     if (response.statusCode == 400) {
-      print('Password reset failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Password reset failed: ${response.statusCode} - ${response.body}');
       throw 'google';
     } else if (response.statusCode != 200 && response.statusCode != 201) {
-      print('Password reset failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Password reset failed: ${response.statusCode} - ${response.body}');
       throw 'somthing went wrong , please try again ';
     }
   }
@@ -251,11 +252,11 @@ class ApiService {
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print('Update profile failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Update profile failed: ${response.statusCode} - ${response.body}');
       throw 'somthing went wrong , please try again ';
     } else {
       await getProfile(token: token);
-      print(
+      debugPrint(
         'Update profile succeeded: ${response.statusCode} - ${response.body}',
       );
     }
@@ -272,7 +273,7 @@ class ApiService {
       },
     );
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print('Update profile failed: ${response.statusCode} - ${response.body}');
+      debugPrint('Update profile failed: ${response.statusCode} - ${response.body}');
       throw 'somthing went wrong , please try again ';
     } else {
       AuthManage.instance.login(
@@ -282,6 +283,7 @@ class ApiService {
         jsonDecode(response.body)['lastName'],
         jsonDecode(response.body)['preferredBranchId'] as int?,
         jsonDecode(response.body)['phoneNumber'] as String,
+        jsonDecode(response.body)['customerId'] as int,
       );
       return jsonDecode(response.body);
     }

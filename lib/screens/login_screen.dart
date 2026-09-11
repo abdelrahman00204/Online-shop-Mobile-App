@@ -7,7 +7,7 @@ import 'package:the_project/screens/signup_screen.dart';
 import 'package:the_project/screens/home_screen.dart';
 import 'package:the_project/screens/user_data_screen.dart';
 import 'package:the_project/managers/social_auth_service.dart';
-import 'package:the_project/widgets/languageToggleButton.dart';
+import 'package:the_project/widgets/language_toggle_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         data['lastName'],
         data['preferredBranchId'],
         data['phoneNumber'],
+        data['customerId'],
       );
 
       if (!mounted) return;
@@ -107,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
           data['lastName'],
           data['preferredBranchId'],
           data['phoneNumber'],
+          data['customerId'],
         );
         Navigator.pushAndRemoveUntil(
           context,

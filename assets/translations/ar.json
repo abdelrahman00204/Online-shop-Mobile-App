@@ -32,7 +32,10 @@
       "first_name_required": "يرجى إدخال الاسم الأول",
       "last_name_required": "يرجى إدخال اسم العائلة",
       "phone_required": "يرجى إدخال رقم الهاتف",
-      "field_required": "يرجى إدخال {}"
+      "field_required": "يرجى إدخال {}",
+      "password_uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+      "password_lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+      "password_special_char": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
     }
   },
   "change_password": {
@@ -43,7 +46,8 @@
     "google_account_message": "أنت مسجل الدخول عبر جوجل. يرجى تغيير كلمة المرور من خلال حساب جوجل الخاص بك.",
     "wrong_current_message": "تعذر تغيير كلمة المرور. يرجى التحقق من كلمة المرور الحالية والمحاولة مرة أخرى.",
     "current_password_required": "كلمة المرور الحالية مطلوبة",
-    "submit_button": "تغيير كلمة المرور"
+    "submit_button": "تغيير كلمة المرور",
+    "password_requirements_hint": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على حرف كبير وحرف صغير ورمز خاص"
   },
   "chat": {
     "title": "المحادثة الذكية",
@@ -64,7 +68,22 @@
     "price_label": "السعر : {} جنيه",
     "add_to_cart": "أضف إلى السلة ",
     "go_to_wishlist": "الذهاب إلى المفضلة ",
-    "add_to_wishlist": "أضف إلى المفضلة "
+    "add_to_wishlist": "أضف إلى المفضلة ",
+    "customer_reviews": "تقييمات العملاء",
+    "write_review": "اكتب تقييم",
+    "view_more_reviews": "عرض المزيد من التقييمات",
+    "add_your_review": "أضف تقييمك",
+    "your_rating": "تقييمك:",
+    "your_comment": "تعليقك:",
+    "comment_hint": "اكتب رأيك هنا...",
+    "submit_review": "إرسال التقييم",
+    "no_description": "لا يوجد وصف متاح",
+    "comment_required": "يرجى إدخال تعليق",
+    "edit_review": "تعديل التقييم",
+    "update_review_hint": "اكتب تقييمك الجديد...",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "view_more_orders": "عرض المزيد من الطلبات"
   },
   "login": {
     "missing_fields_title": "بيانات ناقصة",
@@ -88,7 +107,13 @@
     "title": "الملف الشخصي",
     "favorite_branch_label": "الفرع المفضل: {}",
     "change_password_button": "تغيير كلمة المرور",
-    "update_error_message": "تعذر تحديث ملفك الشخصي. يرجى المحاولة مرة أخرى."
+    "update_error_message": "تعذر تحديث ملفك الشخصي. يرجى المحاولة مرة أخرى.",
+    "recent_orders": "الطلبات الأخيرة",
+    "orders_error": "فشل تحميل الطلبات",
+    "no_orders": "لا توجد طلبات سابقة",
+    "my_reviews": "تقييماتي",
+    "reviews_error": "فشل تحميل التقييمات",
+    "no_reviews": "لم تقم بكتابة أي تقييمات بعد."
   },
   "set_new_password": {
     "title": "تعيين كلمة مرور جديدة",
@@ -132,5 +157,16 @@
   },
   "wishlist": {
     "empty_message": "المفضلة فارغة، أضف شيئًا ما."
+  },
+  "orders": {
+    "order_number": "طلب",
+    "status": "الحالة",
+    "branch": "الفرع",
+    "customer": "العميل",
+    "notes": "ملاحظات",
+    "items_title": "منتجات الطلب",
+    "quantity": "الكمية",
+    "total": "الإجمالي",
+    "cancel_order": "إلغاء الطلب"
   }
 }

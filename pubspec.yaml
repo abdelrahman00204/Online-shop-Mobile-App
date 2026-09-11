@@ -48,6 +48,8 @@ dependencies:
   pinput: ^6.0.2
   easy_localization: ^3.0.8
   googleai_dart: ^8.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +85,7 @@ flutter:
    - assets/F3.jpg
    - .env
    - assets/translations/
+   - assets/bull_icon_master.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -111,3 +114,36 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/bull_icon_master.png"
+  min_sdk_android: 21
+
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/bull_icon_foreground.png"
+
+  web:
+    generate: true
+    image_path: "assets/bull_icon_master.png"
+    background_color: "#FFFFFF"
+    theme_color: "#C1272D"
+  windows:
+    generate: true
+    image_path: "assets/bull_icon_master.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/bull_icon_master.png"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/bull_icon_master.png
+  fullscreen: true
+
+  android_12:
+    color: "#FFFFFF"
+    image: assets/bull_icon_foreground.png
+    icon_background_color: "#000000"

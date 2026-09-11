@@ -1,39 +1,36 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:the_project/dummy_data.dart';
+import 'package:the_project/data/cart_data.dart';
+import 'package:the_project/data/product_data.dart';
 import 'package:the_project/screens/item_screen.dart';
 import 'package:the_project/widgets/quantity_stepper.dart';
 
-class Helpers {
-  final int index1;
-  int quantity;
-
-  Helpers({required this.index1, required this.quantity});
-}
-
-List<Helpers> cartdata = [];
-
 class CartItem extends StatefulWidget {
-  const CartItem({super.key, required this.index, required this.onRemove});
-  final int index;
+  const CartItem({super.key, required this.productId, required this.onRemove});
+  final int productId;
   final VoidCallback onRemove;
   @override
   State<CartItem> createState() => _CartItemState();
 }
 
 class _CartItemState extends State<CartItem> {
-  void _removeItem() {
-    cartdata.removeAt(widget.index);
+  void _removeItem() async {
+    cartdata.removeWhere((item) => item.productId == widget.productId);
+    await CartService.removeCartItem(widget.productId);
     widget.onRemove();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.index >= cartdata.length) {
+    if (cartdata.isEmpty) {
       return const SizedBox.shrink();
     }
-    final product = dummyProducts[cartdata[widget.index].index1];
-    final double subtotal = product.price * cartdata[widget.index].quantity;
+    final product = products.firstWhere((item) => item.id == widget.productId);
+    final num subtotal =
+        product.newPrice *
+        cartdata
+            .firstWhere((item) => item.productId == widget.productId)
+            .quantity;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -52,8 +49,7 @@ class _CartItemState extends State<CartItem> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        ItemScreen(product: dummyProducts[widget.index]),
+                    builder: (context) => ItemScreen(id: widget.productId),
                   ),
                 );
               },
@@ -64,7 +60,7 @@ class _CartItemState extends State<CartItem> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: CachedNetworkImage(
-                      imageUrl: product.imageUrl,
+                      imageUrl: product.images[0].url,
                       height: 90,
                       width: 90,
                       fit: BoxFit.cover,
@@ -107,7 +103,7 @@ class _CartItemState extends State<CartItem> {
                 _label('Price:'),
                 const SizedBox(width: 4),
                 _value(
-                  '${product.price}  EGP ',
+                  '${product.newPrice}  EGP ',
                   color: const Color(0xFF1A73E8),
                   size: 22,
                 ),
@@ -124,11 +120,20 @@ class _CartItemState extends State<CartItem> {
                 _label('Quantity:'),
                 const SizedBox(width: 10),
                 QuantityStepper(
-                  quantity: cartdata[widget.index].quantity,
+                  quantity: cartdata
+                      .firstWhere((item) => item.productId == widget.productId)
+                      .quantity,
+                  productId: widget.productId,
                   onChanged: (newQuantity) {
                     setState(() {
-                      cartdata[widget.index].quantity = newQuantity;
+                      cartdata
+                              .firstWhere(
+                                (item) => item.productId == widget.productId,
+                              )
+                              .quantity =
+                          newQuantity;
                     });
+                    widget.onRemove();
                   },
                 ),
                 const Spacer(),

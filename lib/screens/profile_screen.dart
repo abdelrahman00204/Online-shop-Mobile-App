@@ -1,16 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:the_project/data/branch_data.dart';
+import 'package:the_project/data/orders_data.dart';
+import 'package:the_project/data/reviews_data.dart';
 import 'package:the_project/managers/auth_manage.dart';
 import 'package:the_project/managers/api_serv.dart';
 import 'package:the_project/screens/change_password_screen.dart';
-import 'package:the_project/widgets/languageToggleButton.dart';
+import 'package:the_project/widgets/language_toggle_button.dart';
+import 'package:the_project/widgets/orders_profile_section.dart';
+import 'package:the_project/widgets/reviews_profile_section.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -26,6 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEditing = false;
   bool _isSaving = false;
 
+  late Future<List<OrderResponse>> ordersFuture;
+  late Future<List<ReviewModel>> reviewsFuture;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _phoneController.text = AuthManage.instance.userPhone ?? '';
     _emailController.text = AuthManage.instance.userEmail ?? '';
     selectedBranchId = AuthManage.instance.userFavBranch?.toString() ?? '';
+
+    ordersFuture = getOrders();
+    reviewsFuture = ReviewService.getMyReviews();
   }
 
   @override
@@ -71,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child:  Text('common.ok'.tr()),
+                child: Text('common.ok'.tr()),
               ),
             ],
           ),
@@ -131,6 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(Colors.grey[100]!.value),
       appBar: AppBar(
         title: Text('profile.title'.tr()),
         actions: [
@@ -160,146 +171,185 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // PROFILE CARD
+            Card(
+              elevation: 2.0,
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'common.email_label'.tr(),
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'common.email_label'.tr(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              Text(
+                                AuthManage.instance.userEmail ?? '-',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      Text(
-                        AuthManage.instance.userEmail ?? '-',
-                        style: const TextStyle(fontSize: 18),
+                      const SizedBox(height: 12),
+                      _buildField(
+                        label: 'common.first_name_label'.tr(),
+                        controller: _firstNameController,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildField(
+                        label: 'common.last_name_label'.tr(),
+                        controller: _lastNameController,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildField(
+                        label: 'common.phone_label'.tr(),
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                      ),
+                      const SizedBox(height: 12),
+                      _isEditing
+                          ? DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              initialValue: selectedBranchId,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF2E7D32),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: const Color(
+                                      0xFF2E7D32,
+                                    ).withValues(alpha: 0.4),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF2E7D32),
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: const Color(0xFF2E7D32),
+                              style: const TextStyle(
+                                color: Colors.black87,
+                                fontSize: 15,
+                              ),
+                              items: [
+                                for (final branch in branches)
+                                  DropdownMenuItem(
+                                    value: branch.id.toString(),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.store_outlined,
+                                          color: Color(0xFF2E7D32),
+                                          size: 18,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(branch.name),
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedBranchId = value!;
+                                });
+                              },
+                            )
+                          : Text(
+                              'profile.favorite_branch_label'.tr(
+                                args: [
+                                  branches
+                                      .firstWhere(
+                                        (branch) =>
+                                            branch.id.toString() ==
+                                            selectedBranchId,
+                                        orElse: () => branches.first,
+                                      )
+                                      .name,
+                                ],
+                              ),
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          _isEditing
+                              ? const SizedBox.shrink()
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const ChangePasswordScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'profile.change_password_button'.tr(),
+                                  ),
+                                ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
+            ),
 
-              const SizedBox(height: 12),
-              _buildField(
-                label: 'common.first_name_label'.tr(),
-                controller: _firstNameController,
-              ),
-              const SizedBox(height: 12),
-              _buildField(
-                label: 'common.last_name_label'.tr(),
-                controller: _lastNameController,
-              ),
-              const SizedBox(height: 12),
-              _buildField(
-                label: 'common.phone_label'.tr(),
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-              ),
-              const SizedBox(height: 12),
-              _isEditing
-                  ? DropdownButtonFormField<String>(
-                      isExpanded: true,
-                      initialValue: selectedBranchId,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF2E7D32),
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: const Color(0xFF2E7D32).withOpacity(0.4),
-                            width: 1.5,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF2E7D32),
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      dropdownColor: Colors.white,
-                      iconEnabledColor: const Color(0xFF2E7D32),
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 15,
-                      ),
-                      items: [
-                        for (final branch in branches)
-                          DropdownMenuItem(
-                            value: branch.id.toString(),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.store_outlined,
-                                  color: Color(0xFF2E7D32),
-                                  size: 18,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(branch.name),
-                              ],
-                            ),
-                          ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          selectedBranchId = value!;
-                        });
-                      },
-                    )
-                  : Text(
-                      'profile.favorite_branch_label'.tr(
-                        args: [
-                          branches
-                              .firstWhere(
-                                (branch) =>
-                                    branch.id.toString() == selectedBranchId,
-                              )
-                              .name,
-                        ],
-                      ),
-                      style: const TextStyle(fontSize: 18),
-                    ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _isEditing
-                      ? const SizedBox.shrink()
-                      : ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const ChangePasswordScreen(),
-                              ),
-                            );
-                          },
-                          child: Text('profile.change_password_button'.tr()),
-                        ),
-                ],
-              ),
-            ],
-          ),
+            // SECTIONS PLACED OUTSIDE THE CARD
+            const SizedBox(height: 24),
+
+            BuildOrdersSection(ordersFuture: ordersFuture),
+
+            const SizedBox(height: 12),
+
+            BuildMyReviewsSection(
+              onReviewChanged: () {
+                setState(() {});
+              },
+              reviewsFuture: reviewsFuture,
+            ),
+          ],
         ),
       ),
     );

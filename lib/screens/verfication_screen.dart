@@ -18,7 +18,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   Future<void> _verifyCode(String pin) async {
     setState(() => _isLoading = true);
-    print('Code verified successfully for $pin , ${widget.email}');
+    debugPrint('Code verified successfully for $pin , ${widget.email}');
 
     try {
       await ApiService.codeVerfication(pin, widget.email);

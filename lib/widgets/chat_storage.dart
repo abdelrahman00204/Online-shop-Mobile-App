@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:googleai_dart/googleai_dart.dart';
 
@@ -30,9 +31,9 @@ Future<bool> query(String prompt) async {
       );
     }
 
-    print("AI Response: ${response.text}");
+    debugPrint("AI Response: ${response.text}");
   } catch (e) {
-    print("Error: $e");
+    debugPrint("Error: $e");
   } finally {
     client.close();
   }

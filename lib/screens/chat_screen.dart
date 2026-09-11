@@ -38,21 +38,24 @@ class _ChatScreenState extends State<ChatScreen> {
           setState(() {
             _selectedIndex = index;
             if (_selectedIndex == 0) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const HomeScreen()),
+                (route) => false,
               );
             }
             if (_selectedIndex == 1) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ShopScreen()),
+                (route) => false,
               );
             }
             if (_selectedIndex == 2) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const WishlistScreen()),
+                (route) => false,
               );
             }
           });
@@ -166,8 +169,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 absorbing:
                     true, // blocks all taps/scrolling to what's underneath
                 child: Container(
-                  color: Colors.black.withOpacity(
-                    0.5,
+                  color: Colors.black.withValues(
+                    alpha: 0.5,
                   ), // dim effect, shows content underneath
                 ),
               ),

@@ -1,17 +1,21 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:the_project/data/categories_data.dart';
+import 'package:the_project/data/offers_data.dart';
+import 'package:the_project/data/product_data.dart';
 import 'package:the_project/screens/cart_screen.dart';
+import 'package:the_project/screens/offers_item_screen.dart';
 import 'package:the_project/screens/profile_screen.dart';
 import 'package:the_project/screens/shop_screen.dart';
 import 'package:the_project/screens/wishlist_screen.dart';
-import 'package:the_project/widgets/categories_row.dart';
+import 'package:the_project/widgets/category_card.dart';
 import 'package:the_project/widgets/customsearch.dart';
+import 'package:the_project/widgets/items.dart';
+import 'package:the_project/widgets/offers_card.dart';
 import 'package:the_project/widgets/page_view_home.dart';
 import 'login_screen.dart';
 import 'package:the_project/managers/auth_manage.dart';
 import 'package:the_project/screens/chat_screen.dart';
+import 'package:the_project/data/categories_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // final activeOffersData = getMockActiveOffers();
   int _selectedIndex = 0;
   Widget loggedInDrop() {
     return PopupMenuButton<String>(
@@ -93,21 +98,24 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _selectedIndex = index;
             if (_selectedIndex == 1) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ShopScreen()),
+                (route) => false,
               );
             }
             if (_selectedIndex == 2) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const WishlistScreen()),
+                (route) => false,
               );
             }
             if (_selectedIndex == 3) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ChatScreen()),
+                (route) => false,
               );
             }
           });
@@ -142,27 +150,72 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 6),
             PageViewHome(),
             SizedBox(height: 12),
+
             Text(
-              'home.categories'.tr(),
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            CategoriesRow(),
-            SizedBox(height: 16),
-            Text(
-              'home.offers'.tr(),
+              'Main Categories',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             for (final category in categories)
-              CachedNetworkImage(
-                imageUrl: category.imageUrl,
-                width: 100,
-                height: 100,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(strokeWidth: 2),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.broken_image_outlined),
+              MainCategoryCard(category: category),
+            if (activeOffersData.isNotEmpty) ...{
+              Text(
+                'Offers',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
+              for (final offer in activeOffersData)
+                OfferCard(
+                  offer: offer,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OfferItemScreen(offer: offer),
+                      ),
+                    );
+                  },
+                ),
+            },
+            if (discountedProducts.isNotEmpty) ...[
+              Text(
+                'Discounted Products',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 220,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 0.45,
+                ),
+                itemCount: discountedProducts.length,
+                itemBuilder: (context, index) {
+                  return Items(product: discountedProducts[index]);
+                },
+              ),
+            ],
+
+            Text(
+              'Products',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 220,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.45,
+              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return Items(product: products[index]);
+              },
+            ),
           ],
         ),
       ),

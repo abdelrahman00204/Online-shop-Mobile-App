@@ -1,53 +1,88 @@
 // dummy_data.dart
 // Dummy data for the Frozen Food Shop Flutter app
-// Prices in EGP. Image URLs use picsum.photos seeded placeholders —
+// Prices in EGP. Image URLs use Pexels placeholders —
 // swap with real product photos before shipping.
 
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class ProductCategory {
-  final String id;
-  final String name;
-  final IconData icon; // Material icon name, e.g. Icons.eco
+// ---------------------------------------------------------------------------
+// Models
+// ---------------------------------------------------------------------------
 
-  const ProductCategory({
-    required this.id,
-    required this.name,
-    required this.icon,
-  });
+class Images {
+  final String url;
+  final bool isPrimary;
+
+  const Images({required this.url, this.isPrimary = false});
 }
 
-class Product {
+class SubCategory {
   final String id;
   final String name;
-  final String categoryId;
-  final double price;
-  final double? oldPrice; // null if no discount
-  final String unit; // e.g. "500 g", "1 kg", "6 pcs"
-  final String imageUrl;
-  final double rating;
-  final int reviewCount;
-  final String description;
-  final List<String> branchIds;
-  bool isFavorite;
-  bool inStock;
+  final String categoryId; // links back to MainCategory.id
+  final String imageUrl; // Added imageUrl for subcategory
 
-  Product({
+  const SubCategory({
     required this.id,
     required this.name,
     required this.categoryId,
-    required this.price,
-    this.oldPrice,
-    required this.unit,
     required this.imageUrl,
-    this.rating = 4.5,
-    this.reviewCount = 0,
-    this.description = '',
-    this.isFavorite = false,
-    this.inStock = true,
-    required this.branchIds,
+  });
+}
+
+class MainCategory {
+  final String id;
+  final String name;
+  final IconData icon;
+  final String imageUrl; // Added imageUrl for main category
+  final List<SubCategory> subCategories;
+
+  const MainCategory({
+    required this.id,
+    required this.name,
+    required this.icon,
+    required this.imageUrl,
+    this.subCategories = const [],
+  });
+}
+
+class Products {
+  final int id;
+  final String name;
+  final num oldPrice;
+  final num newPrice;
+  final num? discountPercentage;
+  final bool hasDiscount;
+  final String unitType; // e.g. "g", "kg", "ml", "L", "pcs"
+  final num weight; // numeric magnitude paired with unitType
+  final String? description;
+  final List<Images> images;
+  final String categoryName;
+  final String subCategoryName;
+  final String brandName;
+  final num averageRating;
+  final num reviewsCount;
+  final bool isAvailable;
+
+  const Products({
+    required this.id,
+    required this.name,
+    required this.oldPrice,
+    required this.newPrice,
+    this.discountPercentage,
+    required this.hasDiscount,
+    required this.unitType,
+    required this.weight,
+    required this.description,
+    required this.images,
+    required this.categoryName,
+    required this.subCategoryName,
+    required this.brandName,
+    required this.averageRating,
+    required this.reviewsCount,
+    required this.isAvailable,
   });
 }
 
@@ -86,309 +121,593 @@ class BranchStock {
 }
 
 // ---------------------------------------------------------------------------
-// Categories
+// Main Categories & Subcategories
 // ---------------------------------------------------------------------------
 
-final List<ProductCategory> dummyCategories = [
-  const ProductCategory(id: 'veg',      name: 'Frozen Vegetables',       icon: Icons.eco),
-const ProductCategory(id: 'meat',     name: 'Frozen Meat',             icon: Icons.kebab_dining),
-const ProductCategory(id: 'seafood',  name: 'Frozen Seafood',          icon: Icons.set_meal),
-const ProductCategory(id: 'icecream', name: 'Ice Cream & Desserts',    icon: Icons.icecream),
-const ProductCategory(id: 'fruit',    name: 'Frozen Fruits',           icon: Icons.local_florist),
-const ProductCategory(id: 'bakery',   name: 'Frozen Bakery & Dough',   icon: Icons.bakery_dining),
+final List<MainCategory> dummyMainCategories = [
+  const MainCategory(
+    id: 'veg',
+    name: 'Frozen Vegetables',
+    icon: Icons.eco,
+    imageUrl:
+        'https://images.pexels.com/photos/5870328/pexels-photo-5870328.jpeg',
+    subCategories: [
+      SubCategory(
+        id: 'veg-mix',
+        name: 'Mixed & Blends',
+        categoryId: 'veg',
+        imageUrl:
+            'https://images.pexels.com/photos/5870328/pexels-photo-5870328.jpeg',
+      ),
+      SubCategory(
+        id: 'veg-single',
+        name: 'Single Vegetables',
+        categoryId: 'veg',
+        imageUrl:
+            'https://images.pexels.com/photos/768090/pexels-photo-768090.jpeg',
+      ),
+    ],
+  ),
+  const MainCategory(
+    id: 'meat',
+    name: 'Frozen Meat',
+    icon: Icons.kebab_dining,
+    imageUrl:
+        'https://images.pexels.com/photos/112781/pexels-photo-112781.jpeg',
+    subCategories: [
+      SubCategory(
+        id: 'meat-beef',
+        name: 'Beef',
+        categoryId: 'meat',
+        imageUrl:
+            'https://images.pexels.com/photos/112781/pexels-photo-112781.jpeg',
+      ),
+      SubCategory(
+        id: 'meat-chicken',
+        name: 'Chicken',
+        categoryId: 'meat',
+        imageUrl:
+            'https://images.pexels.com/photos/13698108/pexels-photo-13698108.jpeg',
+      ),
+      SubCategory(
+        id: 'meat-lamb',
+        name: 'Lamb',
+        categoryId: 'meat',
+        imageUrl:
+            'https://images.pexels.com/photos/17988080/pexels-photo-17988080.jpeg',
+      ),
+    ],
+  ),
+  const MainCategory(
+    id: 'seafood',
+    name: 'Frozen Seafood',
+    icon: Icons.set_meal,
+    imageUrl:
+        'https://images.pexels.com/photos/8352786/pexels-photo-8352786.jpeg',
+    subCategories: [
+      SubCategory(
+        id: 'sea-fish',
+        name: 'Fish',
+        categoryId: 'seafood',
+        imageUrl:
+            'https://images.pexels.com/photos/8352786/pexels-photo-8352786.jpeg',
+      ),
+      SubCategory(
+        id: 'sea-shellfish',
+        name: 'Shellfish',
+        categoryId: 'seafood',
+        imageUrl:
+            'https://images.pexels.com/photos/8351657/pexels-photo-8351657.jpeg',
+      ),
+    ],
+  ),
+  const MainCategory(
+    id: 'icecream',
+    name: 'Ice Cream & Desserts',
+    icon: Icons.icecream,
+    imageUrl:
+        'https://images.pexels.com/photos/1582628/pexels-photo-1582628.jpeg',
+    subCategories: [
+      SubCategory(
+        id: 'ice-cream',
+        name: 'Ice Cream',
+        categoryId: 'icecream',
+        imageUrl:
+            'https://images.pexels.com/photos/1582628/pexels-photo-1582628.jpeg',
+      ),
+      SubCategory(
+        id: 'ice-sorbet',
+        name: 'Sorbet',
+        categoryId: 'icecream',
+        imageUrl:
+            'https://images.pexels.com/photos/5060377/pexels-photo-5060377.jpeg',
+      ),
+    ],
+  ),
+  const MainCategory(
+    id: 'fruit',
+    name: 'Frozen Fruits',
+    icon: Icons.local_florist,
+    imageUrl:
+        'https://images.pexels.com/photos/15048305/pexels-photo-15048305.jpeg',
+    subCategories: [
+      SubCategory(
+        id: 'fruit-berries',
+        name: 'Berries',
+        categoryId: 'fruit',
+        imageUrl:
+            'https://images.pexels.com/photos/15048305/pexels-photo-15048305.jpeg',
+      ),
+      SubCategory(
+        id: 'fruit-tropical',
+        name: 'Tropical',
+        categoryId: 'fruit',
+        imageUrl:
+            'https://images.pexels.com/photos/5150156/pexels-photo-5150156.jpeg',
+      ),
+    ],
+  ),
+  const MainCategory(
+    id: 'bakery',
+    name: 'Frozen Bakery & Dough',
+    icon: Icons.bakery_dining,
+    imageUrl:
+        'https://images.pexels.com/photos/6215300/pexels-photo-6215300.jpeg',
+    subCategories: [
+      SubCategory(
+        id: 'bake-dough',
+        name: 'Dough',
+        categoryId: 'bakery',
+        imageUrl:
+            'https://images.pexels.com/photos/10009356/pexels-photo-10009356.jpeg',
+      ),
+      SubCategory(
+        id: 'bake-pastries',
+        name: 'Pastries',
+        categoryId: 'bakery',
+        imageUrl:
+            'https://images.pexels.com/photos/6215300/pexels-photo-6215300.jpeg',
+      ),
+    ],
+  ),
 ];
 
 // ---------------------------------------------------------------------------
 // Products
 // ---------------------------------------------------------------------------
 
-final List<Product> dummyProducts = [
+final List<Products> dummyProducts = [
   // Frozen Vegetables
-  Product(
-    id: 'p001',
+  const Products(
+    id: 1,
     name: 'Mixed Vegetables',
-    categoryId: 'veg',
-    branchIds: [
-      'b1',
-      'b2',
-      'b3',
-      'b4',
-      'b5',
-      'b6',
-      'b7',
-      'b8',
-    ], // all branches – staple item
-    price: 45.0,
-    unit: '500 g',
-    imageUrl:
-        'https://images.pexels.com/photos/5870328/pexels-photo-5870328.jpeg',
-    rating: 4.6,
-    reviewCount: 128,
+    oldPrice: 45.0,
+    newPrice: 45.0,
+    hasDiscount: false,
+    unitType: 'g',
+    weight: 500,
     description:
         'A blend of carrots, peas, corn, and green beans, flash-frozen to lock in freshness.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/5870328/pexels-photo-5870328.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Vegetables',
+    subCategoryName: 'Mixed & Blends',
+    brandName: 'GreenFrost',
+    averageRating: 4.6,
+    reviewsCount: 128,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p002',
+  const Products(
+    id: 2,
     name: 'Green Peas',
-    categoryId: 'veg',
-    branchIds: ['b1', 'b3', 'b5', 'b7'], // 4 branches
-    price: 32.0,
     oldPrice: 38.0,
-    unit: '450 g',
-    imageUrl:
-        'https://images.pexels.com/photos/768090/pexels-photo-768090.jpeg',
-    rating: 4.4,
-    reviewCount: 76,
+    newPrice: 32.0,
+    discountPercentage: 16,
+    hasDiscount: true,
+    unitType: 'g',
+    weight: 450,
     description: 'Sweet green peas, picked at peak ripeness and snap-frozen.',
+    images: [
+      Images(
+        url: 'https://images.pexels.com/photos/768090/pexels-photo-768090.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Vegetables',
+    subCategoryName: 'Single Vegetables',
+    brandName: 'GreenFrost',
+    averageRating: 4.4,
+    reviewsCount: 76,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p003',
+  const Products(
+    id: 3,
     name: 'Okra (Bamya)',
-    categoryId: 'veg',
-    branchIds: ['b3'], // single branch
-    price: 50.0,
-    unit: '500 g',
-    imageUrl:
-        'https://images.pexels.com/photos/10487763/pexels-photo-10487763.jpeg',
-    rating: 4.7,
-    reviewCount: 54,
+    oldPrice: 50.0,
+    newPrice: 50.0,
+    hasDiscount: false,
+    unitType: 'g',
+    weight: 500,
     description: 'Whole frozen okra, ready for stews and traditional dishes.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/10487763/pexels-photo-10487763.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Vegetables',
+    subCategoryName: 'Single Vegetables',
+    brandName: 'GreenFrost',
+    averageRating: 4.7,
+    reviewsCount: 54,
+    isAvailable: true,
   ),
 
   // Frozen Meat
-  Product(
-    id: 'p101',
+  const Products(
+    id: 4,
     name: 'Beef Cubes',
-    categoryId: 'meat',
-    branchIds: ['b2', 'b4', 'b6'], // 3 branches
-    price: 320.0,
-    unit: '1 kg',
-    imageUrl:
-        'https://images.pexels.com/photos/112781/pexels-photo-112781.jpeg',
-    rating: 4.5,
-    reviewCount: 92,
+    oldPrice: 320.0,
+    newPrice: 320.0,
+    hasDiscount: false,
+    unitType: 'kg',
+    weight: 1,
     description: 'Premium beef, cubed and quick-frozen for stews and tagines.',
+    images: [
+      Images(
+        url: 'https://images.pexels.com/photos/112781/pexels-photo-112781.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Meat',
+    subCategoryName: 'Beef',
+    brandName: 'PrimeCut',
+    averageRating: 4.5,
+    reviewsCount: 92,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p102',
+  const Products(
+    id: 5,
     name: 'Chicken Breast Fillets',
-    categoryId: 'meat',
-    branchIds: [
-      'b1',
-      'b2',
-      'b3',
-      'b4',
-      'b5',
-      'b6',
-      'b7',
-      'b8',
-    ], // all branches – most popular
-    price: 180.0,
     oldPrice: 200.0,
-    unit: '1 kg',
-    imageUrl:
-        'https://images.pexels.com/photos/13698108/pexels-photo-13698108.jpeg',
-    rating: 4.6,
-    reviewCount: 150,
+    newPrice: 180.0,
+    discountPercentage: 10,
+    hasDiscount: true,
+    unitType: 'kg',
+    weight: 1,
     description: 'Boneless, skinless chicken breast fillets.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/13698108/pexels-photo-13698108.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Meat',
+    subCategoryName: 'Chicken',
+    brandName: 'PrimeCut',
+    averageRating: 4.6,
+    reviewsCount: 150,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p103',
+  const Products(
+    id: 6,
     name: 'Beef Burger Patties',
-    categoryId: 'meat',
-    branchIds: ['b1', 'b2', 'b5'], // 3 branches
-    price: 150.0,
-    unit: '8 pcs',
-    imageUrl:
-        'https://images.pexels.com/photos/3877668/pexels-photo-3877668.jpeg',
-    rating: 4.3,
-    reviewCount: 64,
+    oldPrice: 150.0,
+    newPrice: 150.0,
+    hasDiscount: false,
+    unitType: 'pcs',
+    weight: 8,
     description: 'Juicy, seasoned beef patties ready for the grill.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/3877668/pexels-photo-3877668.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Meat',
+    subCategoryName: 'Beef',
+    brandName: 'PrimeCut',
+    averageRating: 4.3,
+    reviewsCount: 64,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p104',
+  const Products(
+    id: 7,
     name: 'Lamb Chops',
-    categoryId: 'meat',
-    branchIds: ['b5'], // single branch – premium/limited item
-    price: 410.0,
-    unit: '1 kg',
-    imageUrl:
-        'https://images.pexels.com/photos/17988080/pexels-photo-17988080.jpeg',
-    rating: 4.7,
-    reviewCount: 38,
+    oldPrice: 410.0,
+    newPrice: 410.0,
+    hasDiscount: false,
+    unitType: 'kg',
+    weight: 1,
     description: 'Tender lamb chops, individually quick-frozen.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/17988080/pexels-photo-17988080.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Meat',
+    subCategoryName: 'Lamb',
+    brandName: 'PrimeCut',
+    averageRating: 4.7,
+    reviewsCount: 38,
+    isAvailable: true,
   ),
 
   // Frozen Seafood
-  Product(
-    id: 'p201',
+  const Products(
+    id: 8,
     name: 'Tilapia Fillets',
-    categoryId: 'seafood',
-    branchIds: ['b2', 'b4', 'b7', 'b8'], // 4 branches
-    price: 140.0,
-    unit: '1 kg',
-    imageUrl:
-        'https://images.pexels.com/photos/8352786/pexels-photo-8352786.jpeg',
-    rating: 4.4,
-    reviewCount: 47,
+    oldPrice: 140.0,
+    newPrice: 140.0,
+    hasDiscount: false,
+    unitType: 'kg',
+    weight: 1,
     description: 'Boneless tilapia fillets, mild flavor, great for frying.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/8352786/pexels-photo-8352786.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Seafood',
+    subCategoryName: 'Fish',
+    brandName: 'OceanCatch',
+    averageRating: 4.4,
+    reviewsCount: 47,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p202',
+  const Products(
+    id: 9,
     name: 'Shrimp (Peeled & Deveined)',
-    categoryId: 'seafood',
-    branchIds: [
-      'b1',
-      'b2',
-      'b3',
-      'b4',
-      'b5',
-      'b6',
-      'b7',
-      'b8',
-    ], // all branches – high demand
-    price: 260.0,
     oldPrice: 290.0,
-    unit: '500 g',
-    imageUrl:
-        'https://images.pexels.com/photos/8351657/pexels-photo-8351657.jpeg',
-    rating: 4.8,
-    reviewCount: 133,
+    newPrice: 260.0,
+    discountPercentage: 10,
+    hasDiscount: true,
+    unitType: 'g',
+    weight: 500,
     description: 'Cleaned and deveined shrimp, ready to cook.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/8351657/pexels-photo-8351657.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Seafood',
+    subCategoryName: 'Shellfish',
+    brandName: 'OceanCatch',
+    averageRating: 4.8,
+    reviewsCount: 133,
+    isAvailable: true,
   ),
 
   // Ice Cream & Desserts
-  Product(
-    id: 'p301',
+  const Products(
+    id: 10,
     name: 'Vanilla Ice Cream Tub',
-    categoryId: 'icecream',
-    branchIds: [
-      'b1',
-      'b2',
-      'b3',
-      'b4',
-      'b5',
-      'b6',
-      'b7',
-      'b8',
-    ], // all branches – classic
-    price: 95.0,
-    unit: '1 L',
-    imageUrl:
-        'https://images.pexels.com/photos/1582628/pexels-photo-1582628.jpeg',
-    rating: 4.5,
-    reviewCount: 187,
+    oldPrice: 95.0,
+    newPrice: 95.0,
+    hasDiscount: false,
+    unitType: 'L',
+    weight: 1,
     description: 'Classic creamy vanilla ice cream.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/1582628/pexels-photo-1582628.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Ice Cream & Desserts',
+    subCategoryName: 'Ice Cream',
+    brandName: 'Creamy',
+    averageRating: 4.5,
+    reviewsCount: 187,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p302',
+  const Products(
+    id: 11,
     name: 'Chocolate Fudge Ice Cream',
-    categoryId: 'icecream',
-    branchIds: ['b1', 'b3', 'b5', 'b6', 'b8'], // 5 branches
-    price: 105.0,
-    unit: '1 L',
-    imageUrl:
-        'https://images.pexels.com/photos/14132776/pexels-photo-14132776.jpeg',
-    rating: 4.7,
-    reviewCount: 204,
+    oldPrice: 120.0,
+    newPrice: 105.0,
+    discountPercentage: 13,
+    hasDiscount: true,
+    unitType: 'L',
+    weight: 1,
     description: 'Rich chocolate ice cream swirled with fudge.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/14132776/pexels-photo-14132776.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Ice Cream & Desserts',
+    subCategoryName: 'Ice Cream',
+    brandName: 'Creamy',
+    averageRating: 4.7,
+    reviewsCount: 204,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p303',
+  const Products(
+    id: 12,
     name: 'Mango Sorbet',
-    categoryId: 'icecream',
-    branchIds: ['b6'], // single branch
-    price: 88.0,
-    unit: '750 ml',
-    imageUrl:
-        'https://images.pexels.com/photos/5060377/pexels-photo-5060377.jpeg',
-    rating: 4.3,
-    reviewCount: 41,
+    oldPrice: 88.0,
+    newPrice: 88.0,
+    hasDiscount: false,
+    unitType: 'ml',
+    weight: 750,
     description: 'Refreshing dairy-free mango sorbet.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/5060377/pexels-photo-5060377.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Ice Cream & Desserts',
+    subCategoryName: 'Sorbet',
+    brandName: 'Creamy',
+    averageRating: 4.3,
+    reviewsCount: 41,
+    isAvailable: true,
   ),
 
   // Frozen Fruits
-  Product(
-    id: 'p501',
+  const Products(
+    id: 13,
     name: 'Mixed Berries',
-    categoryId: 'fruit',
-    branchIds: ['b2', 'b4', 'b6', 'b8'], // 4 branches
-    price: 75.0,
-    unit: '400 g',
-    imageUrl:
-        'https://images.pexels.com/photos/15048305/pexels-photo-15048305.jpeg',
-    rating: 4.6,
-    reviewCount: 89,
+    oldPrice: 85.0,
+    newPrice: 75.0,
+    discountPercentage: 12,
+    hasDiscount: true,
+    unitType: 'g',
+    weight: 400,
     description:
         'Strawberries, blueberries, and raspberries, individually frozen.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/15048305/pexels-photo-15048305.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Fruits',
+    subCategoryName: 'Berries',
+    brandName: 'GreenFrost',
+    averageRating: 4.6,
+    reviewsCount: 89,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p502',
+  const Products(
+    id: 14,
     name: 'Mango Chunks',
-    categoryId: 'fruit',
-    branchIds: ['b1', 'b3', 'b5', 'b7', 'b8'], // 5 branches
-    price: 60.0,
-    unit: '500 g',
-    imageUrl:
-        'https://images.pexels.com/photos/5150156/pexels-photo-5150156.jpeg',
-    rating: 4.5,
-    reviewCount: 61,
+    oldPrice: 60.0,
+    newPrice: 60.0,
+    hasDiscount: false,
+    unitType: 'g',
+    weight: 500,
     description: 'Sweet mango chunks, great for smoothies.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/5150156/pexels-photo-5150156.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Fruits',
+    subCategoryName: 'Tropical',
+    brandName: 'GreenFrost',
+    averageRating: 4.5,
+    reviewsCount: 61,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p503',
+  const Products(
+    id: 15,
     name: 'Sliced Strawberries',
-    categoryId: 'fruit',
-    branchIds: ['b1'], // single branch
-    price: 58.0,
-    unit: '450 g',
-    imageUrl:
-        'https://images.pexels.com/photos/4038803/pexels-photo-4038803.jpeg',
-    rating: 4.4,
-    reviewCount: 45,
+    oldPrice: 58.0,
+    newPrice: 58.0,
+    hasDiscount: false,
+    unitType: 'g',
+    weight: 450,
     description: 'Ripe strawberries, sliced and quick-frozen.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/4038803/pexels-photo-4038803.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Fruits',
+    subCategoryName: 'Berries',
+    brandName: 'GreenFrost',
+    averageRating: 4.4,
+    reviewsCount: 45,
+    isAvailable: true,
   ),
 
   // Frozen Bakery & Dough
-  Product(
-    id: 'p601',
+  const Products(
+    id: 16,
     name: 'Puff Pastry Sheets',
-    categoryId: 'bakery',
-    branchIds: ['b3', 'b5', 'b7'], // 3 branches
-    price: 48.0,
-    unit: '500 g',
-    imageUrl:
-        'https://images.pexels.com/photos/6215300/pexels-photo-6215300.jpeg',
-    rating: 4.3,
-    reviewCount: 67,
+    oldPrice: 48.0,
+    newPrice: 48.0,
+    hasDiscount: false,
+    unitType: 'g',
+    weight: 500,
     description: 'Ready-to-bake puff pastry sheets.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/6215300/pexels-photo-6215300.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Bakery & Dough',
+    subCategoryName: 'Pastries',
+    brandName: 'BakeEasy',
+    averageRating: 4.3,
+    reviewsCount: 67,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p602',
+  const Products(
+    id: 17,
     name: 'Frozen Pizza Dough Balls',
-    categoryId: 'bakery',
-    branchIds: ['b2', 'b6'], // 2 branches
-    price: 40.0,
-    unit: '4 pcs',
-    imageUrl:
-        'https://images.pexels.com/photos/10009356/pexels-photo-10009356.jpeg',
-    rating: 4.2,
-    reviewCount: 39,
+    oldPrice: 45.0,
+    newPrice: 40.0,
+    discountPercentage: 11,
+    hasDiscount: true,
+    unitType: 'pcs',
+    weight: 4,
     description: 'Pre-portioned pizza dough balls, just thaw and roll.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/10009356/pexels-photo-10009356.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Bakery & Dough',
+    subCategoryName: 'Dough',
+    brandName: 'BakeEasy',
+    averageRating: 4.2,
+    reviewsCount: 39,
+    isAvailable: true,
   ),
-  Product(
-    id: 'p603',
+  const Products(
+    id: 18,
     name: 'Frozen Croissants (Unbaked)',
-    categoryId: 'bakery',
-    branchIds: ['b1', 'b4', 'b6', 'b8'], // 4 branches
-    price: 70.0,
     oldPrice: 80.0,
-    unit: '6 pcs',
-    imageUrl:
-        'https://images.pexels.com/photos/29407561/pexels-photo-29407561.jpeg',
-    rating: 4.6,
-    reviewCount: 102,
+    newPrice: 70.0,
+    discountPercentage: 13,
+    hasDiscount: true,
+    unitType: 'pcs',
+    weight: 6,
     description: 'Bake-at-home butter croissants.',
+    images: [
+      Images(
+        url:
+            'https://images.pexels.com/photos/29407561/pexels-photo-29407561.jpeg',
+        isPrimary: true,
+      ),
+    ],
+    categoryName: 'Frozen Bakery & Dough',
+    subCategoryName: 'Pastries',
+    brandName: 'BakeEasy',
+    averageRating: 4.6,
+    reviewsCount: 102,
+    isAvailable: true,
   ),
 ];
 
@@ -458,11 +777,6 @@ final List<Branch> dummyBranches = [
 // ---------------------------------------------------------------------------
 // Branch Stock
 // ---------------------------------------------------------------------------
-// Generated with a fixed seed so the data is varied but reproducible every
-// time the app runs: each product randomly lands in 1–8 branches, and within
-// those branches it has an 80% chance of currently being in stock (the rest
-// are "carried here but temporarily out of stock").
-
 final List<BranchStock> dummyBranchStock = _generateBranchStock();
 
 List<BranchStock> _generateBranchStock() {
@@ -478,7 +792,7 @@ List<BranchStock> _generateBranchStock() {
       final inStock = random.nextDouble() > 0.2; // ~80% in stock
       stock.add(
         BranchStock(
-          productId: product.id,
+          productId: product.id.toString(),
           branchId: branch.id,
           inStock: inStock,
           quantity: inStock ? 5 + random.nextInt(46) : 0,
@@ -487,111 +801,4 @@ List<BranchStock> _generateBranchStock() {
     }
   }
   return stock;
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/// Returns all products belonging to the given category id.
-List<Product> getProductsByCategory(String categoryId) {
-  return dummyProducts.where((p) => p.categoryId == categoryId).toList();
-}
-
-/// Returns a category by its id, or null if not found.
-ProductCategory? getCategoryById(String id) {
-  try {
-    return dummyCategories.firstWhere((c) => c.id == id);
-  } catch (_) {
-    return null;
-  }
-}
-
-/// Products currently on discount (oldPrice is set and higher than price).
-List<Product> get discountedProducts => dummyProducts
-    .where((p) => p.oldPrice != null && p.oldPrice! > p.price)
-    .toList();
-
-/// Products marked as favorite, useful for seeding a "Favorites" screen.
-List<Product> get favoriteProducts =>
-    dummyProducts.where((p) => p.isFavorite).toList();
-
-/// Top-rated products, useful for a "Featured" or "Popular" section.
-List<Product> get featuredProducts {
-  final sorted = [...dummyProducts]
-    ..sort((a, b) => b.rating.compareTo(a.rating));
-  return sorted.take(6).toList();
-}
-
-// --- Branch-aware helpers ---------------------------------------------------
-
-/// All branches that carry [productId] at all (in stock or temporarily not).
-List<Branch> getBranchesCarrying(String productId) {
-  final ids = dummyBranchStock
-      .where((s) => s.productId == productId)
-      .map((s) => s.branchId)
-      .toSet();
-  return dummyBranches.where((b) => ids.contains(b.id)).toList();
-}
-
-/// Branches where [productId] is currently in stock (qty > 0).
-List<Branch> getBranchesInStock(String productId) {
-  final ids = dummyBranchStock
-      .where((s) => s.productId == productId && s.inStock)
-      .map((s) => s.branchId)
-      .toSet();
-  return dummyBranches.where((b) => ids.contains(b.id)).toList();
-}
-
-/// All products carried by [branchId], regardless of current stock.
-List<Product> getProductsForBranch(String branchId) {
-  final ids = dummyBranchStock
-      .where((s) => s.branchId == branchId)
-      .map((s) => s.productId)
-      .toSet();
-  return dummyProducts.where((p) => ids.contains(p.id)).toList();
-}
-
-/// Products currently in stock (qty > 0) at [branchId].
-List<Product> getAvailableProductsForBranch(String branchId) {
-  final ids = dummyBranchStock
-      .where((s) => s.branchId == branchId && s.inStock)
-      .map((s) => s.productId)
-      .toSet();
-  return dummyProducts.where((p) => ids.contains(p.id)).toList();
-}
-
-/// Whether [productId] is currently in stock at [branchId].
-/// Returns false both when the branch doesn't carry it and when it's
-/// temporarily out of stock there.
-bool isProductAvailableAt(String productId, String branchId) {
-  final match = dummyBranchStock.where(
-    (s) => s.productId == productId && s.branchId == branchId,
-  );
-  return match.isNotEmpty && match.first.inStock;
-}
-
-/// Remaining quantity of [productId] at [branchId]. Returns 0 if the branch
-/// doesn't carry it or it's out of stock.
-int getQuantityAt(String productId, String branchId) {
-  final match = dummyBranchStock.where(
-    (s) => s.productId == productId && s.branchId == branchId,
-  );
-  return match.isEmpty ? 0 : match.first.quantity;
-}
-
-/// Products carried by only a single branch — useful for testing
-/// "limited availability" badges in the UI.
-List<Product> get singleBranchProducts {
-  return dummyProducts
-      .where((p) => getBranchesCarrying(p.id).length == 1)
-      .toList();
-}
-
-/// Products carried by every branch — useful for a "Available everywhere"
-/// filter or for sanity-checking the generator.
-List<Product> get allBranchProducts {
-  return dummyProducts
-      .where((p) => getBranchesCarrying(p.id).length == dummyBranches.length)
-      .toList();
 }

@@ -32,7 +32,10 @@
       "first_name_required": "Please enter your first name",
       "last_name_required": "Please enter your last name",
       "phone_required": "Please enter your phone number",
-      "field_required": "Please enter your {}"
+      "field_required": "Please enter your {}",
+      "password_uppercase": "Password must contain at least one capital letter",
+      "password_lowercase": "Password must contain at least one small letter",
+      "password_special_char": "Password must contain at least one special character"
     }
   },
   "change_password": {
@@ -43,7 +46,8 @@
     "google_account_message": "You are logged in with Google. Please change your password through your Google account.",
     "wrong_current_message": "Could not change your password. Please check your current password and try again.",
     "current_password_required": "Current password is required",
-    "submit_button": "Change The Password"
+    "submit_button": "Change The Password",
+    "password_requirements_hint": "Password must be at least 8 characters and include a capital letter, a small letter, and a special character"
   },
   "chat": {
     "title": "AI Chat",
@@ -64,7 +68,22 @@
     "price_label": "Price : {} EGP",
     "add_to_cart": "Add to cart ",
     "go_to_wishlist": "Go to Wishlist ",
-    "add_to_wishlist": "Add to Wishlist "
+    "add_to_wishlist": "Add to Wishlist ",
+    "customer_reviews": "Customer Reviews",
+    "write_review": "Write a Review",
+    "view_more_reviews": "View More Reviews",
+    "add_your_review": "Add Your Review",
+    "your_rating": "Your Rating:",
+    "your_comment": "Your Comment:",
+    "comment_hint": "Write your opinion here...",
+    "submit_review": "Submit Review",
+    "no_description": "No description available",
+    "comment_required": "Please enter a comment",
+    "edit_review": "Edit Review",
+    "update_review_hint": "Update your review...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "view_more_orders": "View More Orders"
   },
   "login": {
     "missing_fields_title": "Missing Fields",
@@ -88,7 +107,13 @@
     "title": "Profile",
     "favorite_branch_label": "Favorite Branch: {}",
     "change_password_button": "Change password",
-    "update_error_message": "Could not update your profile. Please try again."
+    "update_error_message": "Could not update your profile. Please try again.",
+    "recent_orders": "Recent Orders",
+    "orders_error": "Failed to load orders",
+    "no_orders": "No orders found",
+    "my_reviews": "My Reviews",
+    "reviews_error": "Failed to load reviews",
+    "no_reviews": "You have not written any reviews yet."
   },
   "set_new_password": {
     "title": "Set New Password",
@@ -132,5 +157,16 @@
   },
   "wishlist": {
     "empty_message": "Wishlist is empty , add something."
+  },
+  "orders": {
+    "order_number": "Order",
+    "status": "Status",
+    "branch": "Branch",
+    "customer": "Customer",
+    "notes": "Notes",
+    "items_title": "Order Items",
+    "quantity": "Quantity",
+    "total": "Total",
+    "cancel_order": "Cancel Order"
   }
 }

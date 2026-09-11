@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:the_project/dummy_data.dart';
+import 'package:the_project/data/categories_data.dart';
 
 class CategoriesFilter extends StatelessWidget {
   final List<bool> categoryState;
@@ -15,7 +15,7 @@ class CategoriesFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView.builder(
-        itemCount: dummyCategories.length + 1,
+        itemCount: categories.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return CheckboxListTile(
@@ -25,7 +25,7 @@ class CategoriesFilter extends StatelessWidget {
             );
           }
           return CheckboxListTile(
-            title: Text(dummyCategories[index-1].name),
+            title: Text(categories[index-1].name),
             value: categoryState[index-1],
             onChanged: (val) => onChanged(index-1, val!),
           );

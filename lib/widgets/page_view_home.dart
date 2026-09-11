@@ -46,7 +46,7 @@ class _PageViewHomeState extends State<PageViewHome> {
     return Column(
       children: [
         SizedBox(
-          height: 200,
+          height: 250,
           child: Stack(
             children: [
               SizedBox(
@@ -69,8 +69,8 @@ class _PageViewHomeState extends State<PageViewHome> {
 
                           if (index != 0)
                             Positioned(
-                              top: 0,
-                              right: 0,
+                              top: 10,
+                              right: 10,
 
                               child: ElevatedButton(
                                 onPressed: () {
@@ -114,11 +114,11 @@ class _PageViewHomeState extends State<PageViewHome> {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.7),
+                        color: Colors.green.withValues(alpha:0.7),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.arrow_back_ios,
+                        Icons.arrow_back,
                         color: Colors.white,
                         size: 16,
                       ),
@@ -140,11 +140,11 @@ class _PageViewHomeState extends State<PageViewHome> {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.7),
+                        color: Colors.green.withValues(alpha: 0.7),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.arrow_forward_ios,
+                        Icons.arrow_forward,
                         color: Colors.white,
                         size: 16,
                       ),

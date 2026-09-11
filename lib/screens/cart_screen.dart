@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:the_project/data/cart_data.dart';
 import 'package:the_project/widgets/cart_item.dart';
+import 'package:the_project/widgets/checkout_dialog.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -10,6 +12,13 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreen extends State<CartScreen> {
+  double get _amountToPay {
+    return cartdata.fold<double>(
+      0,
+      (sum, item) => sum + (item.finalPrice * item.quantity),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +42,7 @@ class _CartScreen extends State<CartScreen> {
                     itemCount: cartdata.length,
                     itemBuilder: (context, index) {
                       return CartItem(
-                        index: index,
-                        key: ValueKey(cartdata[index]),
+                        productId: cartdata[index].productId,
                         onRemove: () => setState(() {}),
                       );
                     },
@@ -44,12 +52,40 @@ class _CartScreen extends State<CartScreen> {
           cartdata.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: Text('common.buy_now'.tr()),
-                    ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Total',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            '$_amountToPay EGP',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            showCheckoutDialog(
+                              context,
+                              amountToPay: _amountToPay,
+                            );
+                          },
+                          child: Text('common.buy_now'.tr()),
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : SizedBox.shrink(),

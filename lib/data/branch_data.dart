@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -55,11 +55,11 @@ final String _baseUrl = dotenv.get('API_URL');
 
 Future<List<BranchData>> getBranch() async {
   final response = await http.get(
-    Uri.parse('$_baseUrl/branches'),
+    Uri.parse('$_baseUrl/branch'),
     headers: {'Content-Type': 'application/json'},
   );
   if (response.statusCode != 200 && response.statusCode != 201) {
-    print('getBranch failed: ${response.statusCode} - ${response.body}');
+    debugPrint('getBranch failed: ${response.statusCode} - ${response.body}');
     branches = [];
     return [];
   } else {

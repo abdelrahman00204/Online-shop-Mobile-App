@@ -18,12 +18,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title:  Text('common.error_title'.tr()),
+          title: Text('common.error_title'.tr()),
           content: Text('change_password.mismatch_message'.tr()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child:  Text('common.ok'.tr()),
+              child: Text('common.ok'.tr()),
             ),
           ],
         ),
@@ -55,7 +55,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child:  Text('common.ok'.tr()),
+                child: Text('common.ok'.tr()),
               ),
             ],
           ),
@@ -70,7 +70,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child:  Text('common.ok'.tr()),
+                child: Text('common.ok'.tr()),
               ),
             ],
           ),
@@ -151,9 +151,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   if (value.length < 8) {
                     return 'common.validators.password_min_length'.tr();
                   }
+                  if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                    return 'common.validators.password_uppercase'.tr();
+                  }
+                  if (!RegExp(r'[a-z]').hasMatch(value)) {
+                    return 'common.validators.password_lowercase'.tr();
+                  }
+                  if (!RegExp(
+                    r'[!@#$%^&*(),.?":{}|<>_\-+=~`\[\]/;]',
+                  ).hasMatch(value)) {
+                    return 'common.validators.password_special_char'.tr();
+                  }
                   return null;
                 },
               ),
+
               SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(
@@ -175,8 +187,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   if (value.length < 8) {
                     return 'common.validators.password_min_length'.tr();
                   }
+                  if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                    return 'common.validators.password_uppercase'.tr();
+                  }
+                  if (!RegExp(r'[a-z]').hasMatch(value)) {
+                    return 'common.validators.password_lowercase'.tr();
+                  }
+                  if (!RegExp(
+                    r'[!@#$%^&*(),.?":{}|<>_\-+=~`\[\]/;]',
+                  ).hasMatch(value)) {
+                    return 'common.validators.password_special_char'.tr();
+                  }
                   return null;
                 },
+              ),
+              const SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Text(
+                  'change_password.password_requirements_hint'.tr(),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                ),
               ),
               SizedBox(height: 32),
               Row(
@@ -190,7 +223,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             width: 20,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        :  Text('change_password.submit_button'.tr()),
+                        : Text('change_password.submit_button'.tr()),
                   ),
                 ],
               ),

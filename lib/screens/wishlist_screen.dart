@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:the_project/data/wish_list_data.dart';
 import 'package:the_project/screens/cart_screen.dart';
 import 'package:the_project/screens/chat_screen.dart';
 import 'package:the_project/screens/home_screen.dart';
@@ -49,21 +50,24 @@ class _WishlistScreenState extends State<WishlistScreen> {
           setState(() {
             _selectedIndex = index;
             if (_selectedIndex == 0) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const HomeScreen()),
+                (route) => false,
               );
             }
             if (_selectedIndex == 1) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ShopScreen()),
+                (route) => false,
               );
             }
             if (_selectedIndex == 3) {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ChatScreen()),
+                (route) => false,
               );
             }
           });
@@ -92,7 +96,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
       ),
       body: Column(
         children: [
-          wishlistData.isEmpty
+          wishlist.isEmpty
               ? Expanded(
                   child: Center(
                     child: Text(
@@ -102,13 +106,25 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   ),
                 )
               : Expanded(
-                  child: ListView.builder(
-                    itemCount: wishlistData.length,
+                  child: GridView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 220,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio:
+                              0.5, // tweak if cards overflow or look squished
+                        ),
+                    itemCount: wishlist.length,
                     itemBuilder: (context, index) {
                       return WishlistItem(
-                        index: index,
+                        id: wishlist[index].productId,
                         onRemove: () => setState(() {}),
-                        key: ValueKey(wishlistData[index]),
+                        key: ValueKey(wishlist[index]),
                       );
                     },
                   ),

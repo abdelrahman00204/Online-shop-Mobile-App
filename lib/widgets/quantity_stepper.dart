@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:the_project/data/cart_data.dart';
 
 class QuantityStepper extends StatefulWidget {
   const QuantityStepper({
     super.key,
     required this.quantity,
+    required this.productId,
     required this.onChanged,
   });
   final int quantity;
+  final int productId;
   final ValueChanged<int> onChanged;
 
   @override
@@ -30,10 +33,16 @@ class _QuantityStepperState extends State<QuantityStepper> {
           _buildButton(
             icon: Icons.remove,
             onTap: _quantity > 1
-                ? () => setState(() {
-                    _quantity--;
-                    widget.onChanged(_quantity);
-                  })
+                ? () async {
+                    setState(() {
+                      _quantity--;
+                      widget.onChanged(_quantity);
+                    });
+                    await CartService.updateCartQuantity(
+                      widget.productId,
+                      _quantity,
+                    );
+                  }
                 : null,
           ),
           Container(
@@ -51,10 +60,13 @@ class _QuantityStepperState extends State<QuantityStepper> {
 
           _buildButton(
             icon: Icons.add,
-            onTap: () => setState(() {
-              _quantity++;
-              widget.onChanged(_quantity);
-            }),
+            onTap: () async {
+              setState(() {
+                _quantity++;
+                widget.onChanged(_quantity);
+              });
+              await CartService.updateCartQuantity(widget.productId, _quantity);
+            },
           ),
         ],
       ),

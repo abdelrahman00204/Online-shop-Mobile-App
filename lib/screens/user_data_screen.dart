@@ -51,7 +51,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
               data['firstName'],
               data['lastName'],
               data['preferredBranchId'],
-              data['phone'],
+              data['phoneNumber'],
+              data['customerId'],
             );
 
             if (!mounted) return;
@@ -65,14 +66,12 @@ class _UserDataScreenState extends State<UserDataScreen> {
             showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                title:  Text('common.error_title'.tr()),
-                content:  Text(
-                  'user_data.incomplete_message'.tr(),
-                ),
+                title: Text('common.error_title'.tr()),
+                content: Text('user_data.incomplete_message'.tr()),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child:  Text('common.ok'.tr()),
+                    child: Text('common.ok'.tr()),
                   ),
                 ],
               ),
@@ -92,7 +91,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
               data['firstName'],
               data['lastName'],
               data['preferredBranchId'],
-              data['phone'],
+              data['phoneNumber'],
+              data['customerId'],
             );
 
             if (!mounted) return;
@@ -106,14 +106,12 @@ class _UserDataScreenState extends State<UserDataScreen> {
             showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                title:  Text('common.error_title'.tr()),
-                content:  Text(
-                  'user_data.incomplete_message'.tr(),
-                ),
+                title: Text('common.error_title'.tr()),
+                content: Text('user_data.incomplete_message'.tr()),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child:  Text('common.ok'.tr()),
+                    child: Text('common.ok'.tr()),
                   ),
                 ],
               ),
@@ -125,12 +123,12 @@ class _UserDataScreenState extends State<UserDataScreen> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-            title:  Text('common.error_title'.tr()),
-            content:  Text('user_data.save_error_message'.tr()),
+            title: Text('common.error_title'.tr()),
+            content: Text('user_data.save_error_message'.tr()),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child:  Text('common.ok'.tr()),
+                child: Text('common.ok'.tr()),
               ),
             ],
           ),
@@ -165,7 +163,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   textInputAction: TextInputAction.next,
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'common.phone_label'.tr(),
                     border: OutlineInputBorder(),
                   ),
@@ -197,7 +195,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: const Color(0xFF2E7D32).withOpacity(0.4),
+                        color: const Color(0xFF2E7D32).withValues(alpha: 0.4),
                         width: 1.5,
                       ),
                     ),
@@ -248,7 +246,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                             ),
                           ),
                         )
-                      :  Text('common.submit'.tr()),
+                      : Text('common.submit'.tr()),
                 ),
               ],
             ),

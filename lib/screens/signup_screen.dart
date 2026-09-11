@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:the_project/data/branch_data.dart';
@@ -8,7 +7,7 @@ import 'package:the_project/screens/home_screen.dart';
 import 'package:the_project/screens/login_screen.dart';
 import 'package:the_project/screens/user_data_screen.dart';
 import 'package:the_project/managers/social_auth_service.dart';
-import 'package:the_project/widgets/languageToggleButton.dart';
+import 'package:the_project/widgets/language_toggle_button.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -30,6 +29,9 @@ class _SignupScreenState extends State<SignupScreen> {
   static String? selectedBranchId = branches.isNotEmpty
       ? branches.first.id.toString()
       : null;
+
+  bool _obscurepass = true;
+  bool _obscureConfirm = true;
   @override
   void dispose() {
     _emailController.dispose();
@@ -47,6 +49,25 @@ class _SignupScreenState extends State<SignupScreen> {
     final emailRegex = RegExp(r'^[\w.\-]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
       return 'common.validators.invalid_email'.tr();
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'common.validators.password_required'.tr();
+    }
+    if (value.length < 8) {
+      return 'common.validators.password_min_length'.tr();
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+      return 'common.validators.password_uppercase'.tr();
+    }
+    if (!RegExp(r'[a-z]').hasMatch(value)) {
+      return 'common.validators.password_lowercase'.tr();
+    }
+    if (!RegExp(r'[!@#$%^&*(),.?":{}|<>_\-+=~`\[\]/;]').hasMatch(value)) {
+      return 'common.validators.password_special_char'.tr();
     }
     return null;
   }
@@ -104,11 +125,8 @@ class _SignupScreenState extends State<SignupScreen> {
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
-    } on String catch (e) {
-      _showDialog(
-        'signup.failed_title'.tr(),
-        'signup.password_validation_requirements'.tr(),
-      );
+    } on String catch (errorMessage) {
+      _showDialog('signup.failed_title'.tr(), errorMessage);
     } catch (_) {
       _showDialog('signup.failed_title'.tr(), 'signup.failed_message'.tr());
     } finally {
@@ -140,6 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
           data['lastName'],
           data['preferredBranchId'],
           data['phoneNumber'],
+          data['customerId'],
         );
         Navigator.pushAndRemoveUntil(
           context,
@@ -147,13 +166,8 @@ class _SignupScreenState extends State<SignupScreen> {
           (route) => false,
         );
       }
-    } on String catch (errorCode) {
-      if (errorCode != 'cancelled') {
-        _showDialog(
-          'common.error_title'.tr(),
-          'signup.google_error_message'.tr(),
-        );
-      }
+    } on String catch (errorMessage) {
+      _showDialog('signup.failed_title'.tr(), errorMessage);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -256,10 +270,47 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     Text('signup.subtitle'.tr()),
                     const SizedBox(height: 16),
-                    /*const Text(
-                      'Email',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),*/
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              labelText: 'common.first_name_label'.tr(),
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'common.validators.first_name_required'
+                                    .tr();
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                              labelText: 'common.last_name_label'.tr(),
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'common.validators.last_name_required'
+                                    .tr();
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -271,59 +322,57 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    /*const Text(
-                      'Password',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),*/
-                    TextField(
+                    TextFormField(
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: _obscurepass,
+                      validator: _validatePassword,
                       decoration: InputDecoration(
                         labelText: 'common.password_label'.tr(),
                         border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurepass
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () =>
+                              setState(() => _obscurepass = !_obscurepass),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: Text(
+                        'change_password.password_requirements_hint'.tr(),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    /*const Text(
-                      'Confirm Password',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),*/
-                    TextField(
+
+                    TextFormField(
                       controller: _confirmPasswordController,
-                      obscureText: true,
+                      obscureText: _obscureConfirm,
+                      validator: _validatePassword,
                       decoration: InputDecoration(
                         labelText: 'common.confirm_password_label'.tr(),
                         border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirm
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () => setState(
+                            () => _obscureConfirm = !_obscureConfirm,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _firstNameController,
-                      decoration: InputDecoration(
-                        labelText: 'common.first_name_label'.tr(),
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'common.validators.first_name_required'.tr();
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _lastNameController,
-                      decoration: InputDecoration(
-                        labelText: 'common.last_name_label'.tr(),
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'common.validators.last_name_required'.tr();
-                        }
-                        return null;
-                      },
-                    ),
+
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _phoneController,
@@ -361,7 +410,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: const Color(0xFF2E7D32).withOpacity(0.4),
+                            color: const Color(
+                              0xFF2E7D32,
+                            ).withValues(alpha: 0.4),
                             width: 1.5,
                           ),
                         ),

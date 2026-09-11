@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -21,7 +22,7 @@ class MainCategories {
   factory MainCategories.fromJson(Map<String, dynamic> json) {
     final rawUrl = json['imageUrl'] as String;
     final fullImageUrl = _resolveImageUrl(rawUrl);
-    print('Full image URL: $fullImageUrl');
+    debugPrint('Full image URL: $fullImageUrl');
     return MainCategories(
       id: json['id'],
       name: json['name'],
@@ -71,6 +72,8 @@ String _resolveImageUrl(String rawUrl) {
 }
 
 List<MainCategories> categories = [];
+List<SubCategories> subCategories = [];
+
 final String _baseUrl = dotenv.get('API_URL');
 final String _imageBaseUrl = _baseUrl.endsWith('/api')
     ? _baseUrl.substring(0, _baseUrl.length - 4)
@@ -82,13 +85,16 @@ Future<List<MainCategories>> getCategories() async {
     headers: {'Content-Type': 'application/json'},
   );
   if (response.statusCode != 200 && response.statusCode != 201) {
-    print('getCategories failed: ${response.statusCode} - ${response.body}');
+    debugPrint('getCategories failed: ${response.statusCode} - ${response.body}');
     categories = [];
     return [];
   } else {
     final List<dynamic> jsonList = jsonDecode(response.body);
     categories = jsonList.map((item) => MainCategories.fromJson(item)).toList();
-    print('getCategories success: ${response.statusCode} - ${response.body}');
+    subCategories = categories
+        .expand((c) => c.subs ?? <SubCategories>[])
+        .toList();
+    debugPrint('getCategories success: ${response.statusCode} - ${response.body}');
 
     return categories;
   }
