@@ -1,29 +1,32 @@
-# Online Shop Mobile App
+# 🛒 Online Shop Mobile App
 
 A cross-platform e-commerce mobile app built with **Flutter**, connecting to a custom **ASP.NET Core** backend API.
 
-> ⚠️ **Status: Work in Progress**
-> This project is **not a finished product**. It is under active development, several features are incomplete or being refined, and it is not yet ready for production or release.
-
 ## Overview
 
-This app lets users browse products by category, manage a cart and wishlist, authenticate via email or social login, and chat with an AI assistant. It's built as a personal/learning project to practice Flutter development alongside a real backend integration.
+This app lets users browse products by category, manage a cart and wishlist, authenticate via email or social login, and chat with an AI assistant. It was built as a personal/learning project to practice Flutter development alongside a real backend integration, and this is the final delivered version.
 
-## Features
+---
+
+## ✨ Features
 
 - **Authentication** — email/password sign up & login, Google Sign-In, Facebook Login, forgot/reset password flow with verification codes
-- **Shop & Categories** — browse products by category with filtering
+- **Shop & Categories** — browse products by category and subcategory, with branch-based filtering
 - **Cart** — add/remove items, adjust quantities, persistent cart state
 - **Wishlist** — save items for later
+- **Offers** — dedicated offer bundles (e.g. seasonal promotions) with included products and pricing
+- **Order Tracking** — view order history and detail, cancel pending orders
 - **AI Chat** — in-app AI assistant (powered by `googleai_dart`)
-- **User Profile** — view/edit user data, change password
-- **Multi-language support** — powered by `easy_localization`, with an in-app language toggle
-- **Backend integration** — talks to an ASP.NET Core REST API for auth, products, and branch/location data
+- **User Profile** — view/edit user data, change password, see recent orders
+- **Multi-language support** — powered by `easy_localization`, with an in-app English/Arabic toggle
+- **Backend integration** — talks to an ASP.NET Core REST API for auth, products, orders, and branch/location data
 
-## Tech Stack
+---
+
+## 🛠️ Tech Stack
 
 - **Framework:** Flutter (Dart)
-- **Backend:** ASP.NET Core (separate repo/service)
+- **Backend:** ASP.NET Core (separate repo/service, hosted on Azure)
 - **Key packages:**
   - `http` — API communication
   - `flutter_secure_storage` — secure token storage
@@ -33,7 +36,9 @@ This app lets users browse products by category, manage a cart and wishlist, aut
   - `googleai_dart` — AI chat
   - `google_fonts`, `chat_bubbles`, `pinput`, `grouped_list` — UI
 
-## Project Structure
+---
+
+## 📂 Project Structure
 
 ```
 lib/
@@ -44,29 +49,41 @@ lib/
 └── main.dart        # App entry point
 ```
 
-## Screenshots
+---
 
-| Home | Shop | Filter |
-|------|------|--------|
-| ![Home](screenshots/home.png) | ![Shop](screenshots/shop.png) | ![Filter](screenshots/filter.png) |
+## 📱 Screenshots
 
-| Cart | Product Details | Wishlist |
-|--------------|------------------|----------|
-| ![Cart](screenshots/cart.png) | ![Product Details](screenshots/product_details.png) | ![Wishlist](screenshots/wishlist.png) |
+<table>
+<tr>
+<td align="center"><b>Home</b><br><img src="screenshots/home.png" width="220"></td>
+<td align="center"><b>Shop</b><br><img src="screenshots/shop.png" width="220"></td>
+<td align="center"><b>Filter</b><br><img src="screenshots/filter.png" width="220"></td>
+</tr>
+<tr>
+<td align="center"><b>Cart</b><br><img src="screenshots/cart.png" width="220"></td>
+<td align="center"><b>Product Details</b><br><img src="screenshots/product_details.png" width="220"></td>
+<td align="center"><b>Wishlist</b><br><img src="screenshots/wishlist.png" width="220"></td>
+</tr>
+<tr>
+<td align="center"><b>Offer</b><br><img src="screenshots/offer_screen1.png" width="220"></td>
+<td align="center"><b>Offer Details</b><br><img src="screenshots/offer_screen2.png" width="220"></td>
+<td align="center"><b>Order</b><br><img src="screenshots/order.png" width="220"></td>
+</tr>
+<tr>
+<td align="center"><b>Login</b><br><img src="screenshots/login.png" width="220"></td>
+<td align="center"><b>Sign Up</b><br><img src="screenshots/signup.png" width="220"></td>
+<td align="center"><b>Forgot Password</b><br><img src="screenshots/forgot_password.png" width="220"></td>
+</tr>
+<tr>
+<td align="center"><b>Search</b><br><img src="screenshots/search.png" width="220"></td>
+<td align="center"><b>Profile</b><br><img src="screenshots/profile.png" width="220"></td>
+<td align="center"><b>AI Chat</b><br><img src="screenshots/ai_chat.png" width="220"></td>
+</tr>
+</table>
 
-| Profile |
-|---------|
-| ![Profile](screenshots/profile.png) |
+---
 
-| Login | Sign Up | Forgot Password |
-|-------|---------|------------------|
-| ![Login](screenshots/login.png) | ![Sign Up](screenshots/signup.png) | ![Forgot Password](screenshots/forgot_password.png) |
-
-| AI Chat | AI Chat (Login Required) |
-|---------|---------------------------|
-| ![AI Chat](screenshots/ai_chat.png) | ![AI Chat Login Prompt](screenshots/ai_chat_login_prompt.png) |
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -88,11 +105,14 @@ flutter run
 - Social login (Google/Facebook) requires your own OAuth credentials and platform configuration (key hashes, app IDs, etc.).
 - The backend API is hosted on Azure. The app's `.env` file needs to point to that endpoint for auth, products, and other data to load.
 
-## Known Limitations
+---
 
-- Not feature-complete — some screens and flows are still being built or fixed
+## ⚠️ Known Limitations
+
 - No automated CI/CD or release builds yet
 
-## License
+---
+
+## 📄 License
 
 No license specified yet.
